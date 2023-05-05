@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:money_tracker/models/cost_model.dart';
-import 'package:money_tracker/models/type_model.dart';
+import 'package:money_manager/models/cost_model.dart';
+import 'package:money_manager/models/type_model.dart';
 
 final rand = Random();
 
