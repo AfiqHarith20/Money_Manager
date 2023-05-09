@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:money_manager/constants.dart';
+import 'package:money_manager/data/data.dart';
+import 'package:money_manager/models/cost_model.dart';
+import 'package:money_manager/models/type_model.dart';
+import 'package:money_manager/page/detail_page.dart';
+import 'package:money_manager/widget/custom_chart.dart';
 import 'package:money_manager/widget/icon_btn.dart';
 import 'package:sizer/sizer.dart';
+import 'package:speed_dial_fab/speed_dial_fab.dart';
 
 class HomePage extends StatefulWidget {
-  final List<double> expenses;
   const HomePage({
     Key? key,
-    required this.expenses,
   }) : super(key: key);
 
   @override
@@ -18,13 +22,28 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    double mostExpensive = 0;
-    widget.expenses.forEach((double price) {
-      if (price > mostExpensive) {
-        mostExpensive = price;
-      }
-    });
     return Scaffold(
+      floatingActionButton: SpeedDialFabWidget(
+        secondaryIconsList: [
+          Icons.lightbulb_circle_rounded,
+          Icons.compare_arrows_rounded,
+          Icons.mode_edit_outline,
+        ],
+        secondaryIconsText: [
+          "Create First Template",
+          "Transfer",
+          "Edit",
+        ],
+        secondaryIconsOnPress: [
+          () {},
+          () {},
+          () {},
+        ],
+        primaryBackgroundColor: Colors.blueAccent,
+        primaryForegroundColor: Colors.white,
+        secondaryBackgroundColor: Colors.lightGreen,
+        secondaryForegroundColor: Colors.white,
+      ),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -33,7 +52,7 @@ class _HomePageState extends State<HomePage> {
             expandedHeight: 10.h,
             leading: CustomBtn(
               onPress: () {},
-              iconData: Icons.settings_outlined,
+              iconData: Icons.menu,
             ),
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
@@ -49,133 +68,132 @@ class _HomePageState extends State<HomePage> {
             actions: [
               CustomBtn(
                 onPress: () {},
-                iconData: Icons.add_outlined,
+                iconData: Icons.notifications,
               ),
             ],
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, int index) => Container(
-                margin: EdgeInsets.only(
-                  left: 2.w,
-                  right: 2.w,
-                  top: 2.w,
-                  bottom: 2.w,
-                ),
-                decoration: BoxDecoration(
-                  color: kPrimaryColor,
-                  borderRadius: BorderRadius.circular(3.h),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(
-                    1.w,
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Weekly Spending',
-                        style: GoogleFonts.abel(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w600,
-                          color: kTextColor,
-                          letterSpacing: 1.0,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomBtn(
-                              onPress: () {},
-                              iconData: Icons.arrow_back_outlined),
-                          Text(
-                            "10 Nov 2023 - 18 Nov 2023",
-                            style: GoogleFonts.atma(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13.sp,
-                              color: kTextColor,
-                            ),
-                          ),
-                          CustomBtn(
-                              onPress: () {},
-                              iconData: Icons.arrow_forward_outlined),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      Row(
-                        children: [
-                          CustomBar(
-                            day: 'su',
-                            amountSpent: widget.expenses[0],
-                            expensive: mostExpensive,
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              childCount: 1,
+              (context, int index) {
+                if (index == 0) {
+                  return Container(
+                    margin: EdgeInsets.only(
+                      left: 2.w,
+                      right: 2.w,
+                      top: 2.w,
+                      bottom: 2.w,
+                    ),
+                    decoration: BoxDecoration(
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.circular(3.h),
+                    ),
+                    child: CustomChart(
+                      expenses: weeklySpending,
+                    ),
+                  );
+                } else {
+                  final TypeModel typeModel = typeNames[index - 1];
+                  double tAmountSpent = 0;
+                  typeModel.expenses!.forEach((CostModel expense) {
+                    tAmountSpent += expense.cost!;
+                  });
+                  return _buildCategories(typeModel, tAmountSpent);
+                }
+              },
+              childCount: 1 + typeNames.length,
             ),
           ),
         ],
       ),
     );
   }
-}
 
-class CustomBar extends StatelessWidget {
-  final String day;
-  final double amountSpent;
-  final double expensive;
-  final double _maxBarHeight = 20.h;
-  CustomBar({
-    Key? key,
-    required this.day,
-    required this.amountSpent,
-    required this.expensive,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final barHeight = amountSpent / expensive * _maxBarHeight;
-    return Column(
-      children: [
-        Text(
-          "/RM${amountSpent.toStringAsFixed(2)}",
-          style: GoogleFonts.aubrey(
-            fontSize: 11.sp,
-            fontWeight: FontWeight.w500,
-            color: kTextColor,
+  _buildCategories(TypeModel category, double tAmountSpent) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailPage(
+              typeModel: category,
+            ),
           ),
+        );
+      },
+      child: Container(
+        width: 100.w,
+        height: 13.h,
+        margin: kMargin,
+        padding: kPadding,
+        decoration: BoxDecoration(
+          color: kPrimaryColor,
+          borderRadius: kRadius,
         ),
-        SizedBox(
-          height: 1.h,
-        ),
-        Container(
-          height: barHeight,
-          width: 3.w,
-          decoration: BoxDecoration(
-            color: kSecondaryColor,
-            borderRadius: BorderRadius.circular(1.h),
+        child: Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                category.name!,
+                style: GoogleFonts.abel(
+                  fontSize: 14.sp,
+                  color: kTextColor,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 1.0,
+                ),
+              ),
+              Text(
+                '\RM${(category.maxAmount! - tAmountSpent).toStringAsFixed(2)} / \RM${category.maxAmount!.toStringAsFixed(2)}',
+                style: GoogleFonts.atma(
+                  fontSize: 14.sp,
+                  color: kTextColor,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 1.0,
+                ),
+              ),
+            ],
           ),
-        ),
-        SizedBox(
-          height: 1.h,
-        ),
-        Text(
-          day,
-          style: GoogleFonts.aubrey(
-            fontSize: 11.sp,
-            fontWeight: FontWeight.w600,
-            color: kTextColor,
+          SizedBox(
+            height: 2.h,
           ),
-        ),
-      ],
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final double maxBarWidth = constraints.maxWidth;
+              final double percentage =
+                  (category.maxAmount! - tAmountSpent) / category.maxAmount!;
+              double width = percentage * maxBarWidth;
+              if (width < 0) {
+                width = 0;
+              }
+              return Stack(
+                children: [
+                  Container(
+                    height: 3.h,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(2.h),
+                        bottomRight: Radius.circular(2.h),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 3.h,
+                    width: width,
+                    decoration: BoxDecoration(
+                      color: setupColor(percentage),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(2.h),
+                        bottomRight: Radius.circular(2.h),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          )
+        ]),
+      ),
     );
   }
 }

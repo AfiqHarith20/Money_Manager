@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager/constants.dart';
 import 'package:money_manager/page/homepage.dart';
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
       builder: (context, orientation, deviceType) {
         return MaterialApp(
           title: 'Expense Manager',
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
             scaffoldBackgroundColor: kScaffoldColor,
             appBarTheme: AppBarTheme(
@@ -29,9 +31,7 @@ class MyApp extends StatelessWidget {
               color: kSecondaryColor,
             ),
           ),
-          home: HomePage(
-            expenses: [],
-          ),
+          home: HomePage(),
         );
       },
     );
