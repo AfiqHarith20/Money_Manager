@@ -30,6 +30,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^4.0.4
   sizer: ^2.0.15
+  speed_dial_fab: ^2.3.0
+  easy_sidemenu: ^0.4.1+1
 
 dev_dependencies:
   flutter_test:
