@@ -9,14 +9,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
-  badges:
-    dependency: transitive
-    description:
-      name: badges
-      sha256: "727580d938b7a1ff47ea42df730d581415606b4224cfa708671c10287f8d3fe6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -65,14 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-  easy_sidemenu:
+  custom_sliding_segmented_control:
     dependency: "direct main"
     description:
-      name: easy_sidemenu
-      sha256: "9ce07d26f4c8f85f15f4ec6151dd38f41921bf0032e5f996048a3b0f4678ed5b"
+      name: custom_sliding_segmented_control
+      sha256: "95cfcf706879ee4bad21847f4824599dd5d7716f5f734df30a56116d6179aa97"
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.1+1"
+    version: "1.7.4"
   fake_async:
     dependency: transitive
     description:
@@ -139,6 +131,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.5"
+  keyboard_actions:
+    dependency: "direct main"
+    description:
+      name: keyboard_actions
+      sha256: "31e0ab2a706ac8f58887efa60efc1f19aecdf37d8ab0f665a0f156d1fbeab650"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.0"
   matcher:
     dependency: transitive
     description:

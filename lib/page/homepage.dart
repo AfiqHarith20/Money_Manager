@@ -5,6 +5,8 @@ import 'package:money_manager/data/data.dart';
 import 'package:money_manager/models/cost_model.dart';
 import 'package:money_manager/models/type_model.dart';
 import 'package:money_manager/page/detail_page.dart';
+import 'package:money_manager/page/drawer_page.dart';
+import 'package:money_manager/page/newrecord_page.dart';
 import 'package:money_manager/widget/custom_chart.dart';
 import 'package:money_manager/widget/icon_btn.dart';
 import 'package:sizer/sizer.dart';
@@ -32,28 +34,36 @@ class _HomePageState extends State<HomePage> {
         secondaryIconsText: [
           "Create First Template",
           "Transfer",
-          "Edit",
+          "New Record",
         ],
         secondaryIconsOnPress: [
           () {},
           () {},
-          () {},
+          () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NewRecordPage(),
+              ),
+            );
+          },
         ],
         primaryBackgroundColor: Colors.blueAccent,
         primaryForegroundColor: Colors.white,
         secondaryBackgroundColor: Colors.lightGreen,
         secondaryForegroundColor: Colors.white,
       ),
+      drawer: DrawerPage(),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             forceElevated: true,
             floating: true,
             expandedHeight: 10.h,
-            leading: CustomBtn(
-              onPress: () {},
-              iconData: Icons.menu,
-            ),
+            // leading: CustomBtn(
+            //   onPress: () {},
+            //   iconData: Icons.menu,
+            // ),
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 "My Budget",
