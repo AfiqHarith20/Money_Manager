@@ -31,7 +31,8 @@ dependencies:
   google_fonts: ^4.0.4
   sizer: ^2.0.15
   speed_dial_fab: ^2.3.0
-  easy_sidemenu: ^0.4.1+1
+  custom_sliding_segmented_control: ^1.7.4
+  keyboard_actions: ^4.2.0
 
 dev_dependencies:
   flutter_test:
