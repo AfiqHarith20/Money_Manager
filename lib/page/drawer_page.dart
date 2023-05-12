@@ -4,6 +4,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:money_manager/constants.dart';
+import 'package:money_manager/page/currencylist_page.dart';
+import 'package:money_manager/page/homepage.dart';
+import 'package:money_manager/page/profile_page.dart';
 import 'package:sizer/sizer.dart';
 
 class DrawerPage extends StatelessWidget {
@@ -36,12 +39,26 @@ class DrawerPage extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.home_rounded),
             title: Text('Home'),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomePage(),
+                ),
+              ),
+            },
           ),
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Profile'),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(),
+                ),
+              ),
+            },
           ),
           ListTile(
             leading: Icon(Icons.av_timer_rounded),
@@ -56,7 +73,14 @@ class DrawerPage extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.currency_exchange_rounded),
             title: Text('Currency Rates'),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CurrencyList(),
+                ),
+              ),
+            },
           ),
           ListTile(
             leading: Icon(Icons.settings),
