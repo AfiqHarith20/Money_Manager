@@ -29,7 +29,7 @@ class _NewRecordPageState extends State<NewRecordPage> {
     // TODO: implement initState
     super.initState();
     _selectedOption = 1;
-    _fetchExchangeRate();
+    // _fetchExchangeRate();
     // _amountController.addListener(_onAmountChanged);
   }
 
@@ -44,16 +44,16 @@ class _NewRecordPageState extends State<NewRecordPage> {
   //   });
   // }
 
-  Future<void> _fetchExchangeRate() async {
-    try {
-      final rate = await getExchangeRate(_fromCurrency, _toCurrency);
-      setState(() {
-        _exchangeRate = rate;
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
+  // Future<void> _fetchExchangeRate() async {
+  //   try {
+  //     final rate = await getExchangeRate(_fromCurrency, _toCurrency);
+  //     setState(() {
+  //       _exchangeRate = rate;
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   KeyboardActionsConfig _buildConfig(BuildContext context) {
     return KeyboardActionsConfig(
