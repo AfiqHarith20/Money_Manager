@@ -54,66 +54,68 @@ class _HomePageState extends State<HomePage> {
         secondaryForegroundColor: Colors.white,
       ),
       drawer: DrawerPage(),
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            forceElevated: true,
-            floating: true,
-            expandedHeight: 10.h,
-            // leading: CustomBtn(
-            //   onPress: () {},
-            //   iconData: Icons.menu,
-            // ),
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                "My Budget",
-                style: GoogleFonts.aBeeZee(
-                  fontSize: 12.sp,
-                  letterSpacing: 1.0,
-                  fontWeight: FontWeight.w500,
-                  color: kTextColor,
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              forceElevated: true,
+              floating: true,
+              expandedHeight: 10.h,
+              // leading: CustomBtn(
+              //   onPress: () {},
+              //   iconData: Icons.menu,
+              // ),
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+                  "My Budget",
+                  style: GoogleFonts.aBeeZee(
+                    fontSize: 12.sp,
+                    letterSpacing: 1.0,
+                    fontWeight: FontWeight.w500,
+                    color: kTextColor,
+                  ),
                 ),
               ),
+              actions: [
+                CustomBtn(
+                  onPress: () {},
+                  iconData: Icons.notifications,
+                ),
+              ],
             ),
-            actions: [
-              CustomBtn(
-                onPress: () {},
-                iconData: Icons.notifications,
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, int index) {
+                  if (index == 0) {
+                    return Container(
+                      margin: EdgeInsets.only(
+                        left: 2.w,
+                        right: 2.w,
+                        top: 2.w,
+                        bottom: 2.w,
+                      ),
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.circular(3.h),
+                      ),
+                      child: CustomChart(
+                        expenses: weeklySpending,
+                      ),
+                    );
+                  } else {
+                    final TypeModel typeModel = typeNames[index - 1];
+                    double tAmountSpent = 0;
+                    typeModel.expenses!.forEach((CostModel expense) {
+                      tAmountSpent += expense.cost!;
+                    });
+                    return _buildCategories(typeModel, tAmountSpent);
+                  }
+                },
+                childCount: 1 + typeNames.length,
               ),
-            ],
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, int index) {
-                if (index == 0) {
-                  return Container(
-                    margin: EdgeInsets.only(
-                      left: 2.w,
-                      right: 2.w,
-                      top: 2.w,
-                      bottom: 2.w,
-                    ),
-                    decoration: BoxDecoration(
-                      color: kPrimaryColor,
-                      borderRadius: BorderRadius.circular(3.h),
-                    ),
-                    child: CustomChart(
-                      expenses: weeklySpending,
-                    ),
-                  );
-                } else {
-                  final TypeModel typeModel = typeNames[index - 1];
-                  double tAmountSpent = 0;
-                  typeModel.expenses!.forEach((CostModel expense) {
-                    tAmountSpent += expense.cost!;
-                  });
-                  return _buildCategories(typeModel, tAmountSpent);
-                }
-              },
-              childCount: 1 + typeNames.length,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
