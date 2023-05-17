@@ -36,3 +36,33 @@ List<TypeModel> typeNames = [
       name: 'Entertainment', maxAmount: 100, expenses: _generalExpenses()),
   TypeModel(name: 'Transport', maxAmount: 100, expenses: _generalExpenses()),
 ];
+
+class Money {
+  late String image;
+  late String name;
+  late String time;
+  late String fee;
+  late bool buy;
+}
+
+List<Money> geter() {
+  Money upwork = Money();
+  upwork.name = 'Upwork';
+  upwork.fee = '650';
+  upwork.time = 'today';
+  upwork.image = 'up.png';
+  upwork.buy = false;
+  Money starbucks = Money();
+  starbucks.buy = true;
+  starbucks.fee = '20';
+  starbucks.image = 'starbuck.png';
+  starbucks.name = 'Starbuck';
+  starbucks.time = 'today';
+  Money transfer = Money();
+  transfer.buy = true;
+  transfer.fee = '200';
+  transfer.image = 'credit-card.png';
+  transfer.name = 'Transfer for Adam';
+  transfer.time = '20 April 2023';
+  return [upwork, starbucks, transfer, upwork, starbucks, transfer];
+}
