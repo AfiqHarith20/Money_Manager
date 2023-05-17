@@ -54,101 +54,65 @@ class _HomePageState extends State<HomePage> {
         secondaryForegroundColor: Colors.white,
       ),
       drawer: DrawerPage(),
-      appBar: AppBar(
-        title: Text(
-          'My Budget',
-          style: GoogleFonts.aBeeZee(
-            fontSize: 16.sp,
-            letterSpacing: 1.0,
-            fontWeight: FontWeight.w500,
-            color: kTextColor,
-          ),
-        ),
-        actions: [
-          CustomBtn(
-            onPress: () {
-              Navigator.pop(context);
-            },
-            iconData: Icons.notifications,
-          ),
-        ],
-      ),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 36.h,
-                child: _head(),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Transaction History",
-                      style: GoogleFonts.aubrey(
-                        fontWeight: FontWeight.w600,
-                        color: kTextColor,
-                        fontSize: 16.sp,
-                        letterSpacing: 2.0,
-                      ),
-                    ),
-                    Text(
-                      "See all..",
-                      style: GoogleFonts.aubrey(
-                        fontWeight: FontWeight.w600,
-                        color: kTextColorShade,
-                        fontSize: 12.sp,
-                        letterSpacing: 2.0,
-                      ),
-                    ),
-                  ],
+            SliverAppBar(
+              forceElevated: true,
+              floating: true,
+              expandedHeight: 10.h,
+              // leading: CustomBtn(
+              //   onPress: () {},
+              //   iconData: Icons.menu,
+              // ),
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+                  "My Budget",
+                  style: GoogleFonts.aBeeZee(
+                    fontSize: 12.sp,
+                    letterSpacing: 1.0,
+                    fontWeight: FontWeight.w500,
+                    color: kTextColor,
+                  ),
                 ),
               ),
+              actions: [
+                CustomBtn(
+                  onPress: () {},
+                  iconData: Icons.notifications,
+                ),
+              ],
             ),
             SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return ListTile(
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: Image.asset(
-                      'assets/images/${geter()[index].image}',
-                    ),
-                  ),
-                  title: Text(
-                    geter()[index].name,
-                    style: GoogleFonts.breeSerif(
-                      fontWeight: FontWeight.w600,
-                      color: kTextColor,
-                      fontSize: 12.sp,
-                      letterSpacing: 2.0,
-                    ),
-                  ),
-                  subtitle: Text(
-                    geter()[index].time,
-                    style: GoogleFonts.aubrey(
-                      fontWeight: FontWeight.w500,
-                      color: kTextColor,
-                      fontSize: 12.sp,
-                      letterSpacing: 2.0,
-                    ),
-                  ),
-                  trailing: Text(
-                    geter()[index].fee,
-                    style: GoogleFonts.aubrey(
-                      fontWeight: FontWeight.w500,
-                      color: geter()[index].buy ? Colors.red : Colors.green,
-                      fontSize: 12.sp,
-                      letterSpacing: 2.0,
-                    ),
-                  ),
-                );
-              }, childCount: geter().length),
+              delegate: SliverChildBuilderDelegate(
+                (context, int index) {
+                  if (index == 0) {
+                    return Container(
+                      margin: EdgeInsets.only(
+                        left: 2.w,
+                        right: 2.w,
+                        top: 2.w,
+                        bottom: 2.w,
+                      ),
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.circular(3.h),
+                      ),
+                      child: CustomChart(
+                        expenses: weeklySpending,
+                      ),
+                    );
+                  } else {
+                    final TypeModel typeModel = typeNames[index - 1];
+                    double tAmountSpent = 0;
+                    typeModel.expenses!.forEach((CostModel expense) {
+                      tAmountSpent += expense.cost!;
+                    });
+                    return _buildCategories(typeModel, tAmountSpent);
+                  }
+                },
+                childCount: 1 + typeNames.length,
+              ),
             ),
           ],
         ),
@@ -156,214 +120,92 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _head() {
-    return Stack(
-      children: [
-        Column(
-          children: [
-            Container(
-              width: double.infinity,
-              height: 25.h,
-              decoration: BoxDecoration(
-                color: Color(0xff368983),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
-                ),
-              ),
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 35,
-                      left: 10,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Good Morning",
-                          style: GoogleFonts.aubrey(
-                            fontWeight: FontWeight.w500,
-                            color: kTextColor,
-                            fontSize: 12.sp,
-                            letterSpacing: 2.0,
-                          ),
-                        ),
-                        Text(
-                          "Afiq Harith",
-                          style: GoogleFonts.breeSerif(
-                            fontWeight: FontWeight.w600,
-                            color: kTextColor,
-                            fontSize: 16.sp,
-                            letterSpacing: 2.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-        Positioned(
-          top: 140,
-          left: 50,
-          right: 50,
-          child: Container(
-            height: 20.h,
-            width: 40.w,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(47, 125, 121, 0.3),
-                  offset: Offset(0, 6),
-                  blurRadius: 12,
-                  spreadRadius: 6,
-                ),
-              ],
-              color: Color.fromARGB(255, 47, 125, 121),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Total Balance",
-                        style: GoogleFonts.aubrey(
-                          fontWeight: FontWeight.w600,
-                          color: kTextColor,
-                          fontSize: 12.sp,
-                          letterSpacing: 1.0,
-                        ),
-                      ),
-                      Icon(
-                        Icons.more_horiz_outlined,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 7,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Row(
-                    children: [
-                      Text(
-                        "\RM 3,759.90",
-                        style: GoogleFonts.aBeeZee(
-                          fontWeight: FontWeight.bold,
-                          color: kTextColor,
-                          fontSize: 14.sp,
-                          letterSpacing: 1.0,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 13,
-                            backgroundColor: Color.fromARGB(255, 85, 145, 141),
-                            child: Icon(
-                              Icons.arrow_downward_outlined,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 7,
-                          ),
-                          Text(
-                            "Income",
-                            style: GoogleFonts.aubrey(
-                              fontWeight: FontWeight.w600,
-                              color: kTextColor,
-                              fontSize: 12.sp,
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 13,
-                            backgroundColor: Color.fromARGB(255, 85, 145, 141),
-                            child: Icon(
-                              Icons.arrow_upward_outlined,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 7,
-                          ),
-                          Text(
-                            "Expense",
-                            style: GoogleFonts.aubrey(
-                              fontWeight: FontWeight.w600,
-                              color: kTextColor,
-                              fontSize: 12.sp,
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "\RM 1,808.67",
-                        style: GoogleFonts.aBeeZee(
-                          fontWeight: FontWeight.bold,
-                          color: kTextColor,
-                          fontSize: 10.sp,
-                          letterSpacing: 1.0,
-                        ),
-                      ),
-                      Text(
-                        "\RM 403.82",
-                        style: GoogleFonts.aBeeZee(
-                          fontWeight: FontWeight.bold,
-                          color: kTextColor,
-                          fontSize: 10.sp,
-                          letterSpacing: 1.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+  _buildCategories(TypeModel category, double tAmountSpent) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailPage(
+              typeModel: category,
             ),
           ),
+        );
+      },
+      child: Container(
+        width: 100.w,
+        height: 13.h,
+        margin: kMargin,
+        padding: kPadding,
+        decoration: BoxDecoration(
+          color: kPrimaryColor,
+          borderRadius: kRadius,
         ),
-      ],
+        child: Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                category.name!,
+                style: GoogleFonts.abel(
+                  fontSize: 14.sp,
+                  color: kTextColor,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 1.0,
+                ),
+              ),
+              Text(
+                '\RM${(category.maxAmount! - tAmountSpent).toStringAsFixed(2)} / \RM${category.maxAmount!.toStringAsFixed(2)}',
+                style: GoogleFonts.atma(
+                  fontSize: 14.sp,
+                  color: kTextColor,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 1.0,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 2.h,
+          ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final double maxBarWidth = constraints.maxWidth;
+              final double percentage =
+                  (category.maxAmount! - tAmountSpent) / category.maxAmount!;
+              double width = percentage * maxBarWidth;
+              if (width < 0) {
+                width = 0;
+              }
+              return Stack(
+                children: [
+                  Container(
+                    height: 3.h,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(2.h),
+                        bottomRight: Radius.circular(2.h),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 3.h,
+                    width: width,
+                    decoration: BoxDecoration(
+                      color: setupColor(percentage),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(2.h),
+                        bottomRight: Radius.circular(2.h),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          )
+        ]),
+      ),
     );
   }
 }
