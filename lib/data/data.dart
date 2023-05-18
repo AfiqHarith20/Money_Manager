@@ -66,3 +66,20 @@ List<Money> geter() {
   transfer.time = '20 April 2023';
   return [upwork, starbucks, transfer, upwork, starbucks, transfer];
 }
+
+List<Money> geter_top() {
+  Money snap_food = Money();
+  snap_food.time = '19 April 2023';
+  snap_food.image = 'starbuck.png';
+  snap_food.buy = true;
+  snap_food.fee = '- \RM 30.00';
+  snap_food.name = 'Snap Food';
+  Money snap = Money();
+  snap.image = 'credit card 2.png';
+  snap.time = 'Today';
+  snap.buy = true;
+  snap.fee = '- \RM100.00';
+  snap.name = 'Transfer';
+
+  return [snap_food, snap];
+}
