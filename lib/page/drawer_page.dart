@@ -7,6 +7,7 @@ import 'package:money_manager/constants.dart';
 import 'package:money_manager/page/currencylist_page.dart';
 import 'package:money_manager/page/homepage.dart';
 import 'package:money_manager/page/profile_page.dart';
+import 'package:money_manager/page/statistics_page.dart';
 import 'package:sizer/sizer.dart';
 
 class DrawerPage extends StatelessWidget {
@@ -66,9 +67,16 @@ class DrawerPage extends StatelessWidget {
             onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
-            leading: Icon(Icons.receipt_rounded),
-            title: Text('Record'),
-            onTap: () => {Navigator.of(context).pop()},
+            leading: Icon(Icons.auto_graph_rounded),
+            title: Text('Statistics'),
+            onTap: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StatisticsPage(),
+                ),
+              ),
+            },
           ),
           ListTile(
             leading: Icon(Icons.currency_exchange_rounded),
