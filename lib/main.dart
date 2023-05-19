@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager/constants.dart';
-import 'package:money_manager/page/home_page_host.dart';
 import 'package:money_manager/page/homepage.dart';
 import 'package:sizer/sizer.dart';
 
@@ -32,8 +31,7 @@ class MyApp extends StatelessWidget {
               color: kSecondaryColor,
             ),
           ),
-          home: HomePageHost(),
-          // HomePage(),
+          home: HomePage(),
         );
       },
     );
