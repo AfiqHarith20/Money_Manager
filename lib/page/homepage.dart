@@ -4,7 +4,6 @@ import 'package:money_manager/constants.dart';
 import 'package:money_manager/data/data.dart';
 import 'package:money_manager/models/cost_model.dart';
 import 'package:money_manager/models/type_model.dart';
-import 'package:money_manager/page/detail_page.dart';
 import 'package:money_manager/page/drawer_page.dart';
 import 'package:money_manager/page/newrecord_page.dart';
 import 'package:money_manager/widget/custom_chart.dart';
